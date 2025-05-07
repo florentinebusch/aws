@@ -51,6 +51,7 @@ async function loadStations(url) {
             console.log(feature.properties)
             layer.bindPopup(`
                 <h4>${feature.properties.name}</h4>
+                <p>Höhe: ${feature.geometry.coordinates[2]} m</p>
                 `);
         }
     }).addTo(overlays.stations);

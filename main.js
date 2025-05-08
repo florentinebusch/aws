@@ -67,6 +67,7 @@ async function loadStations(url) {
         }
     }).addTo(overlays.stations);
     showTemperature(jsondata);
+    showWind(jsondata);
 }
 loadStations("https://static.avalanche.report/weather_stations/stations.geojson");
 
@@ -114,7 +115,7 @@ function showWind(jsondata) {
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: "aws-div-icon_wind",
-                    html: `<span style="background-color: ${color}"> ${feature.properties.WG.toFixed(1)}</span>`
+                    html: `<span style="background-color: ${color}"> ${feature.properties.WG.toFixed(2)}</span>`
                 }),
             })
         },

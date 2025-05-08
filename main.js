@@ -28,8 +28,8 @@ L.control.layers({
     "Esri WorldImagery": L.tileLayer.provider("Esri.WorldImagery"),
 }, {
     "Wetterstationen": overlays.stations,
-    "Temperatur": overlays.temperature,
-    "Windgeschwindigkeit": overlays.wind,
+    "Temperatur (C)": overlays.temperature,
+    "Windgeschwindigkeit (km/h)": overlays.wind,
 }).addTo(map);
 
 // Maßstab

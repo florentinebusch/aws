@@ -13,7 +13,8 @@ let map = L.map("map").setView([ibk.lat, ibk.lng], ibk.zoom);
 // thematische Layer
 let overlays = {
     stations: L.featureGroup(),
-    temperature: L.featureGroup().addTo(map),
+    temperature: L.featureGroup(),
+    wind: L.featureGroup().addTo(map),
 }
 
 // Layer control
@@ -28,6 +29,7 @@ L.control.layers({
 }, {
     "Wetterstationen": overlays.stations,
     "Temperatur": overlays.temperature,
+    "Windgeschwindigkeit": overlays.wind,
 }).addTo(map);
 
 // Maßstab
@@ -80,7 +82,7 @@ function showTemperature(jsondata) {
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: "aws-div-icon",
-                    html: `<span style="background-color: ${color}"> ${feature.properties.LT}</span>`
+                    html: `<span style="background-color: ${color}"> ${feature.properties.LT.toFixed(1)}</span>`
                 }),
             })
         },
@@ -100,3 +102,31 @@ function getColor(value, ramp ) {
 let testColor = getColor(-5, COLORS.temperature);
 console.log("TestColor fuer temp -3", testColor);
 
+function showWind(jsondata) {
+    L.geoJSON(jsondata, {
+        filter: function (feature) {
+            if (feature.properties.WG > 0 && feature.properties.WG < 1000) {
+                return true; 
+            }
+        },
+        pointToLayer: function(feature, latlng) {
+            let color = getColor(feature.properties.WG, COLORS.wind);
+            return L.marker(latlng, {
+                icon: L.divIcon({
+                    className: "aws-div-icon_wind",
+                    html: `<span style="background-color: ${color}"> ${feature.properties.WG.toFixed(1)}</span>`
+                }),
+            })
+        },
+    }).addTo(overlays.wind);
+}
+
+console.log(COLORS.wind);
+function getColor(value, ramp ) {
+    for (let rule of ramp) {
+        console.log("rule", rule);
+        if (value >= rule.min && value < rule.max) {
+            return rule.color;
+        }
+    }
+}

@@ -51,7 +51,7 @@ async function loadStations(url) {
         },
         onEachFeature: function (feature, layer) {
             let pointInTime = new Date (feature.properties.date);
-            //console.log(pointInTime);
+            console.log(pointInTime);
             layer.bindPopup(`
                 <h4>${feature.properties.name} ${feature.geometry.coordinates[2]}m</h4>
                 <ul>

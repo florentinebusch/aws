@@ -14,7 +14,8 @@ let map = L.map("map").setView([ibk.lat, ibk.lng], ibk.zoom);
 let overlays = {
     stations: L.featureGroup(),
     temperature: L.featureGroup(),
-    wind: L.featureGroup().addTo(map),
+    wind: L.featureGroup(),
+    snow: L.featureGroup().addTo(map),
 }
 
 // Layer control
@@ -30,7 +31,8 @@ L.control.layers({
     "Wetterstationen": overlays.stations,
     "Temperatur (C)": overlays.temperature,
     "Windgeschwindigkeit (km/h)": overlays.wind,
-}).addTo(map);
+    "Schneehöhe (cm)": overlays.snow,
+    }).addTo(map);
 
 // Maßstab
 L.control.scale({
@@ -68,6 +70,7 @@ async function loadStations(url) {
     }).addTo(overlays.stations);
     showTemperature(jsondata);
     showWind(jsondata);
+    showSnow(jsondata);
 }
 loadStations("https://static.avalanche.report/weather_stations/stations.geojson");
 
@@ -100,8 +103,8 @@ function getColor(value, ramp ) {
     }
 }
 
-let testColor = getColor(-5, COLORS.temperature);
-console.log("TestColor fuer temp -3", testColor);
+//let testColor = getColor(-5, COLORS.temperature);
+//console.log("TestColor fuer temp -3", testColor);
 
 function showWind(jsondata) {
     L.geoJSON(jsondata, {
@@ -123,6 +126,35 @@ function showWind(jsondata) {
 }
 
 console.log(COLORS.wind);
+function getColor(value, ramp ) {
+    for (let rule of ramp) {
+        console.log("rule", rule);
+        if (value >= rule.min && value < rule.max) {
+            return rule.color;
+        }
+    }
+}
+
+function showSnow(jsondata) {
+    L.geoJSON(jsondata, {
+        filter: function (feature) {
+            if (feature.properties.HS > 0 && feature.properties.HS < 1000) {
+                return true; 
+            }
+        },
+        pointToLayer: function(feature, latlng) {
+            let color = getColor(feature.properties.HS, COLORS.snow);
+            return L.marker(latlng, {
+                icon: L.divIcon({
+                    className: "aws-div-icon_snow",
+                    html: `<span style="background-color: ${color}"> ${feature.properties.HS.toFixed(2)}</span>`
+                }),
+            })
+        },
+    }).addTo(overlays.snow);
+}
+
+console.log(COLORS.snow);
 function getColor(value, ramp ) {
     for (let rule of ramp) {
         console.log("rule", rule);

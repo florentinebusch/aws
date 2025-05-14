@@ -36,6 +36,18 @@ L.control.layers({
     "Windrichtung (°) mit Windgeschwindigkeit": overlays.direction,
     }).addTo(map);
 
+// Layer control Rainviewer
+L.control.rainviewer({ 
+    position: 'bottomleft',
+    nextButtonText: '>',
+    playStopButtonText: 'Play/Stop',
+    prevButtonText: '<',
+    positionSliderLabelText: "Hour:",
+    opacitySliderLabelText: "Opacity:",
+    animationInterval: 500,
+    opacity: 0.5
+    }).addTo(map);
+
 // Maßstab
 L.control.scale({
     imperial: false,

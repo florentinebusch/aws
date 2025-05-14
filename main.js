@@ -30,10 +30,10 @@ L.control.layers({
     "Esri WorldImagery": L.tileLayer.provider("Esri.WorldImagery"),
 }, {
     "Wetterstationen": overlays.stations,
-    "Temperatur (C)": overlays.temperature,
+    "Temperatur (°C)": overlays.temperature,
     "Windgeschwindigkeit (km/h)": overlays.wind,
     "Schneehöhe (cm)": overlays.snow,
-    "Windrichtung (°) mit Windgeschwindigkeit": overlays.direction,
+    "Windrichtung (°) mit Windgeschwindigkeit (km/h)": overlays.direction,
     }).addTo(map);
 
 // Layer control Rainviewer

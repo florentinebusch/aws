@@ -183,17 +183,17 @@ function getColor(value, ramp ) {
 function showDirection(jsondata) {
     L.geoJSON(jsondata, {
         filter: function (feature) {
-            if (feature.properties.WG > 0 && feature.properties.WG < 1000) {
+            if (feature.properties.WR > 0 && feature.properties.WR < 360) {
                 return true; 
             }
         },
         pointToLayer: function(feature, latlng) {
-            let color = getColor(feature.properties.WG, COLORS.direction);
-            let windDirection = feature.properties.WR ? feature.properties.WR.toFixed(2) : "-";
+            let color = getColor(feature.properties.WG, COLORS.wind);
             return L.marker(latlng, {
                 icon: L.divIcon({
-                    className: "aws-div-icon_direction",
-                    html: `<span style="background-color: ${color}">${windDirection}</span>`
+                    className: "aws-div-icon_wind",
+                    html: `<span style= "transform:rotate(${feature.properties.WR}deg);
+                    background-color: ${color}"><i class="fa-solid fa-circle-arrow-down"></i></span>`,
                 }),
             })
         },
